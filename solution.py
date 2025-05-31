@@ -12,7 +12,7 @@ class Ingredient:
     def is_available_in_china(self):
         return 'except China' not in self.availability
 
-class RecipeOptimizer:
+class Recipe:
     def __init__(self, ingredients_df):
         self.ingredients_df = ingredients_df
         print(self.ingredients_df)
@@ -25,7 +25,7 @@ class RecipeOptimizer:
         }
         self.final_recipe = {}
 
-    def find_substitute(self, target_id, similarity_tol=100, melting_point_tol=20):
+    def find(self, target_id, similarity_tol=100, melting_point_tol=20):
         target_ingredient = next((ing for ing in self.ingredients if ing.id == target_id), None)
         if not target_ingredient:
             raise ValueError(f"Target ingredient {target_id} not found.")
@@ -43,7 +43,7 @@ class RecipeOptimizer:
             if item and item.is_available_in_china():
                 self.final_recipe[item_id] = pct
             else:
-                substitute = self.find_substitute(item_id)
+                substitute = self.find(item_id)
                 if substitute:
                     self.final_recipe[substitute.id] = pct
                 else:
@@ -58,7 +58,7 @@ class RecipeOptimizer:
             total_melting_point += item.melting_point * pct
         return total_cost, total_melting_point
 
-    def display_recipe(self):
+    def display(self):
         print("Final Recipe Composition:")
         for k, v in self.final_recipe.items():
             print(f"{k}: {v*100:.0f}%")
@@ -68,6 +68,6 @@ class RecipeOptimizer:
 
 if __name__ == "__main__":
     df = pd.read_csv("ingredients_info.csv")
-    optimizer = RecipeOptimizer(df)
-    optimizer.optimize()
-    optimizer.display_recipe()
+    recipe = Recipe(df)
+    recipe.optimize()
+    recipe.display()
