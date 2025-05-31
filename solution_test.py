@@ -28,17 +28,18 @@ def test_ingredient_availability():
     })
     assert not item.is_available_in_china()
 
-def test_find_substitute(recipe):
-    sub = recipe.find('6Z9K9FXGBN9Y1GXA')
+def test_find_substitute(optimizer):
+    sub = optimizer.find('6Z9K9FXGBN9Y1GXA')
     assert sub is not None
     assert sub.id != '6Z9K9FXGBN9Y1GXA'
 
-def test_optimize_recipe(recipe):
-    recipe.optimize()
-    assert len(recipe.final_recipe) == 3
+def test_optimize_recipe(optimizer):
+    optimizer.optimize()
+    print(optimizer.final_recipe)
+    assert len(optimizer.final_recipe) == 3
 
-def test_cost_and_melting_point(recipe):
-    recipe.optimize()
-    cost, mp = recipe.calculate_cost_and_melting_point()
+def test_cost_and_melting_point(optimizer):
+    optimizer.optimize()
+    cost, mp = optimizer.calculate_cost_and_melting_point()
     assert 0 < cost < 20
     assert 190 <= mp <= 230

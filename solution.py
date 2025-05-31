@@ -38,6 +38,7 @@ class Recipe:
         return None
 
     def optimize(self):
+        print(self)
         for item_id, pct in self.original_recipe.items():
             item = next((i for i in self.ingredients if i.id == item_id), None)
             if item and item.is_available_in_china():
